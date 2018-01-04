@@ -8,4 +8,9 @@ public class Constants {
     public final static String DING_TALK_CORPID_TEST = "ding905dbbdcf6abf4f835c2f4657eb6378f";
 
     public final static String DING_TALK_CORPSECERT_TEST = "dz7JvFMJcn81iUWDRrt3OvH4kMCm1_ccsE9TtHuWXK-Z5Pzk_V8Yvi1bKHG3RHzp";
+
+    public final static String DING_TALK_MESSAGE_TYPE_TEXT="text";
+
+
+    public final static String DING_TALK_MESSAGE_WELCOME="welcome to DingTalk";
 }

@@ -2,6 +2,7 @@ package com.sap.dingtalk.service;
 
 import com.sap.dingtalk.model.CorpInfo;
 import com.sap.dingtalk.model.Group;
+import com.sap.dingtalk.requestVo.SendTextMessageVo;
 
 
 public interface DingTalkService {
@@ -21,5 +22,12 @@ public interface DingTalkService {
      * @return the group created by ding talk
      */
     Group createGroup(Group group,CorpInfo info);
+
+
+    /**
+     * @function to send message to chat
+     * @return the status message
+     */
+    String sendTextMessage(String accessToken, SendTextMessageVo vo);
 
 }

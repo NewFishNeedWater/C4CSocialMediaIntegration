@@ -1,6 +1,7 @@
-package com.sap.dingtalk.model;
+package com.sap.dingtalk.Repository;
 
 
+import com.sap.dingtalk.model.CorpInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

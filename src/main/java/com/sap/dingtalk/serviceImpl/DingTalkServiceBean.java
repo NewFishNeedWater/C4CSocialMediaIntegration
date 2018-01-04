@@ -1,11 +1,10 @@
 package com.sap.dingtalk.serviceImpl;
 
 import com.sap.dingtalk.constants.Constants;
-import com.sap.dingtalk.model.AccountGroup;
 import com.sap.dingtalk.model.CorpInfo;
-import com.sap.dingtalk.model.CorpInfoRepository;
+import com.sap.dingtalk.Repository.CorpInfoRepository;
 import com.sap.dingtalk.model.Group;
-import com.sap.dingtalk.service.AccountGroupService;
+import com.sap.dingtalk.requestVo.SendTextMessageVo;
 import com.sap.dingtalk.service.DingTalkService;
 import com.sap.dingtalk.utils.HttpRequestUtils;
 import net.sf.json.JSONObject;
@@ -26,8 +25,6 @@ public class DingTalkServiceBean implements DingTalkService{
 
     @Override
     public CorpInfo getToken(CorpInfo corpInfo){
-
-
         StringBuffer errMsg=new StringBuffer();
 
         if(null==corpInfo){
@@ -50,6 +47,7 @@ public class DingTalkServiceBean implements DingTalkService{
 
         if(!errMsg.toString().isEmpty()){
 
+            logger.warn(errMsg.toString());
             corpInfo.setErrMsg(errMsg.toString());
             return corpInfo;
 
@@ -57,8 +55,12 @@ public class DingTalkServiceBean implements DingTalkService{
 
         String requestUrl = Constants.DING_TALK_WEBSERVICE_URL +"/gettoken?corpid="+corpInfo.getCropId()+"&corpsecret="+corpInfo.getCorpSecret();
 
-        String token = HttpRequestUtils.httpGet(requestUrl).get("access_token")==null?null:HttpRequestUtils.httpGet(requestUrl).get("access_token").toString();
-        corpInfo.setAccessToken(token);
+        //String token = HttpRequestUtils.httpGet(requestUrl).get("access_token")==null?null:HttpRequestUtils.httpGet(requestUrl).get("access_token").toString();
+        JSONObject object = HttpRequestUtils.httpGet(requestUrl);
+
+        corpInfo.setAccessToken(object.get("access_token")==null?null:object.get("access_token").toString());
+        corpInfo.setErrMsg(object.get("errmsg")==null?null:object.get("errmsg").toString());
+        corpInfo.setErrMsg(object.get("errcode")==null?null:object.get("errcode").toString());
 
         corpInfoRepository.save(corpInfo);
 
@@ -121,6 +123,49 @@ public class DingTalkServiceBean implements DingTalkService{
 
 
         return group;
+
+    }
+
+
+    public String sendTextMessage(String accessToken, SendTextMessageVo vo){
+
+        StringBuffer errMsg=new StringBuffer();
+
+
+        if(vo.getChatid()==null || vo.getChatid().isEmpty()){
+            logger.error("chatId is empty");
+            errMsg.append("chatId is empty");
+
+        }
+        if(vo.getText()==null){
+            logger.error("message is empty");
+            errMsg.append("message is empty");
+        }else{
+            if(vo.getText().getContent()==null||vo.getText().getContent().isEmpty()){
+                logger.error("message is empty");
+                errMsg.append("message is empty");
+            }
+        }
+
+
+        if(!errMsg.toString().isEmpty()){
+
+            return errMsg.toString();
+
+        }
+
+
+        String requestUrlForCreateGroup =Constants.DING_TALK_WEBSERVICE_URL+"/chat/send?access_token="+accessToken;
+
+        JSONObject jsonObject = JSONObject.fromObject(vo);
+
+        JSONObject response = HttpRequestUtils.httpPost(requestUrlForCreateGroup, jsonObject,false);
+
+
+        String statusMessage = response.get("errmsg")==null?null:response.get("errmsg").toString();
+
+
+        return statusMessage;
 
     }
 
