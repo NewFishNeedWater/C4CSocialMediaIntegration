@@ -75,8 +75,9 @@ public class C4CController {
         AccountGroup accountGroupInDB=accountGroupService.getAccountGroupByAccountId(vo.getAccountId());
 
         if(accountGroupInDB!=null){
-            logger.warn("There is an account group existing for account Id"+vo.getAccountId());
-            response.setErrorDesc("There is an account group existing"+vo.getAccountId());
+            logger.warn("There is an account group existing for Account Id: "+vo.getAccountId());
+            response.setErrorDesc("There is an account group existing for Account Id :"+vo.getAccountId());
+            response.setErrorCode("40099");
 
             return response;
         }
@@ -115,7 +116,7 @@ public class C4CController {
             textVo.setMsgtype(Constants.DING_TALK_MESSAGE_TYPE_TEXT);
 
             TextMessage message = new TextMessage();
-            message.setContent(Constants.DING_TALK_MESSAGE_WELCOME+"\n"+"AccountId:"+accountGroup.getAccountId()+"\n"+"AccountType:"+vo.getAccountType());
+            message.setContent(Constants.DING_TALK_MESSAGE_WELCOME+"\n"+"Account Id:"+accountGroup.getAccountId()+"\n"+"Account Type:"+vo.getAccountType());
 
             textVo.setText(message);
             dingTalkService.sendTextMessage(corpInfo.getAccessToken(),textVo);
@@ -190,7 +191,7 @@ public class C4CController {
 
         TextMessage message = new TextMessage();
 
-        message.setContent("Account has been changed"+"\n"+"AccountId:"+accountGroup.getAccountId()+"\n");
+        message.setContent("Account has been changed"+"\n"+"Account Id:"+accountGroup.getAccountId()+"\n");
 
         textVo.setText(message);
         Map<String,Object> responseMap = dingTalkService.sendTextMessage(corpInfo.getAccessToken(),textVo);

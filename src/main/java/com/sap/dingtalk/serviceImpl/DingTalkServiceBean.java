@@ -61,7 +61,7 @@ public class DingTalkServiceBean implements DingTalkService{
         JSONObject object = HttpRequestUtils.httpGet(requestUrl,Constants.DING_TALK_API_GET_TOKEN);
         corpInfo.setAccessToken(object.get("access_token")==null?null:object.get("access_token").toString());
         corpInfo.setErrMsg(object.get("errmsg")==null?null:object.get("errmsg").toString());
-        corpInfo.setErrMsg(object.get("errcode")==null?null:object.get("errcode").toString());
+        corpInfo.setErrorCode(object.get("errcode")==null?null:object.get("errcode").toString());
 
         corpInfoRepository.save(corpInfo);
 

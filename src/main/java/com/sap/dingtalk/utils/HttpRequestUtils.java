@@ -135,8 +135,8 @@ public class HttpRequestUtils {
 
 
     /**
-     * 发送get请求
-     * @param url    路径
+     *
+     * @param url
      * @return
      */
     public static JSONObject httpGet(String url,String apiName){
