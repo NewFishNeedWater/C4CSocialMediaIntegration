@@ -5,14 +5,14 @@ import com.sap.dingtalk.model.Group;
 
 public class CreateGroupResponseVo {
 
-    private CorpInfo corpInfo;
+    //private CorpInfo corpInfo;
     private String errorCode;
     private String errorDesc;
 
-    private Group group;
+   // private Group group;
 
 
-    public Group getGroup() {
+   /* public Group getGroup() {
         return group;
     }
 
@@ -26,7 +26,7 @@ public class CreateGroupResponseVo {
 
     public void setCorpInfo(CorpInfo corpInfo) {
         this.corpInfo = corpInfo;
-    }
+    }*/
 
     public String getErrorCode() {
         return errorCode;

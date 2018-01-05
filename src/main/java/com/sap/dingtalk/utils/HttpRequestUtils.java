@@ -84,6 +84,7 @@ public class HttpRequestUtils {
         log.setStartTime(new Date());
         log.setRequest(jsonParam.toString());
         log.setApiName(apiName);
+        log.setApiType("OUT");
 
         try {
 
@@ -146,6 +147,7 @@ public class HttpRequestUtils {
         log.setRequest(url);
         log.setStartTime(new Date());
         log.setApiName(apiName);
+        log.setApiType("OUT");
         JSONObject jsonResult = null;
         try {
             HttpClient client = new DefaultHttpClient();

@@ -4,6 +4,7 @@ import com.sap.dingtalk.constants.Constants;
 import com.sap.dingtalk.model.AccountGroup;
 import com.sap.dingtalk.model.CorpInfo;
 import com.sap.dingtalk.model.Group;
+import com.sap.dingtalk.model.LogInfo;
 import com.sap.dingtalk.requestVo.AccountUpdateInfoRequestVo;
 import com.sap.dingtalk.requestVo.CreateGroupRequestVo;
 import com.sap.dingtalk.requestVo.SendTextMessageVo;
@@ -13,6 +14,7 @@ import com.sap.dingtalk.responseVo.CreateGroupResponseVo;
 import com.sap.dingtalk.service.AccountGroupService;
 import com.sap.dingtalk.service.CorpService;
 import com.sap.dingtalk.service.DingTalkService;
+import com.sap.dingtalk.service.LogInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -45,6 +48,9 @@ public class C4CController {
     @Autowired
     AccountGroupService accountGroupService;
 
+    @Autowired
+    LogInfoService logInfoService;
+
 
 
     @ApiOperation(value="CreateChatGroup",notes="Create Chat Group Based On User List",httpMethod = "POST")
@@ -52,6 +58,18 @@ public class C4CController {
     public CreateGroupResponseVo createGroup(@RequestBody @ApiParam(name="CreateGroupRequestVo" , value = "create group request Vo", required = true) CreateGroupRequestVo vo){
 
         logger.warn("CreateChatGroup--Request from external:"+ JSONObject.fromObject(vo).toString());
+
+        LogInfo log = new LogInfo();
+
+        log.setApiName("CreateChatGroup");
+
+        log.setApiType("IN");
+
+        log.setStartTime(new Date());
+
+        log.setRequest(JSONObject.fromObject(vo).toString());
+
+
 
         CreateGroupResponseVo response = new CreateGroupResponseVo();
 
@@ -78,6 +96,18 @@ public class C4CController {
             logger.warn("There is an account group existing for Account Id: "+vo.getAccountId());
             response.setErrorDesc("There is an account group existing for Account Id :"+vo.getAccountId());
             response.setErrorCode("40099");
+            //response.setCorpInfo(new CorpInfo());
+            //response.setGroup(new Group());
+            logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
+
+            log.setEndTime(new Date());
+
+            log.setResponse(JSONObject.fromObject(response).toString());
+
+            log.setErrorCode(response.getErrorCode());
+            log.setErrorMsg(response.getErrorDesc());
+
+            logInfoService.saveLog(log);
 
             return response;
         }
@@ -122,9 +152,20 @@ public class C4CController {
             dingTalkService.sendTextMessage(corpInfo.getAccessToken(),textVo);
         }
 
-        response.setCorpInfo(corpInfo);
-        response.setGroup(group);
+        //response.setCorpInfo(corpInfo);
+        //response.setGroup(group);
+        response.setErrorCode("0");
+        response.setErrorDesc("ok");
 
+        logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
+        log.setEndTime(new Date());
+
+        log.setResponse(JSONObject.fromObject(response).toString());
+
+        log.setErrorCode(response.getErrorCode());
+        log.setErrorMsg(response.getErrorDesc());
+
+        logInfoService.saveLog(log);
 
         return response;
 
@@ -135,6 +176,18 @@ public class C4CController {
     public AccountUpdateInfoResponseVo createGroup(@RequestBody @ApiParam(name="AccountUpdateInfoRequestVo" , value = "Account Update Notification Request Vo", required = true) AccountUpdateInfoRequestVo vo){
 
         logger.warn("AccountUpdateNotification -- Request from external:"+ JSONObject.fromObject(vo).toString());
+
+        LogInfo log = new LogInfo();
+
+        log.setApiName("AccountUpdateNotification");
+
+        log.setApiType("IN");
+
+        log.setStartTime(new Date());
+
+        log.setRequest(JSONObject.fromObject(vo).toString());
+
+
 
         AccountUpdateInfoResponseVo responseVo = new AccountUpdateInfoResponseVo();
 
@@ -148,6 +201,8 @@ public class C4CController {
             errMsg.append("BOId is empty");
 
             responseVo.setErrMsg(errMsg.toString());
+            logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
+
 
             return responseVo;
 
@@ -160,6 +215,14 @@ public class C4CController {
 
             logger.error("corp Id is empty or corp secret is empty");
             responseVo.setErrMsg("corp Id is empty or corp secret is empty");
+            responseVo.setErrCode("40097");
+            log.setEndTime(new Date());
+
+            log.setResponse(JSONObject.fromObject(responseVo).toString());
+
+            log.setErrorCode(responseVo.getErrCode());
+            log.setErrorMsg(responseVo.getErrMsg());
+            logInfoService.saveLog(log);
             return responseVo;
         }
 
@@ -179,6 +242,16 @@ public class C4CController {
 
             logger.error("cannot find account group by UUid"+BOId );
             responseVo.setErrMsg("cannot find account group by UUid"+BOId );
+            responseVo.setErrCode("40098");
+            logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
+
+            log.setEndTime(new Date());
+
+            log.setResponse(JSONObject.fromObject(responseVo).toString());
+
+            log.setErrorCode(responseVo.getErrCode());
+            log.setErrorMsg(responseVo.getErrMsg());
+            logInfoService.saveLog(log);
             return responseVo;
 
         }
@@ -208,6 +281,16 @@ public class C4CController {
 
         responseVo.setErrCode(responseMap.get("errcode").toString());
 
+        logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
+
+        log.setEndTime(new Date());
+
+        log.setResponse(JSONObject.fromObject(responseVo).toString());
+
+        log.setErrorCode(responseVo.getErrCode());
+        log.setErrorMsg(responseVo.getErrMsg());
+
+        logInfoService.saveLog(log);
         return responseVo;
 
     }

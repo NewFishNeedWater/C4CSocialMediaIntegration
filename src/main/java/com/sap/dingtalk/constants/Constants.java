@@ -17,7 +17,5 @@ public class Constants {
 
     public final static String DING_TALK_API_GET_TOKEN="get token";
 
-
-
     public final static String DING_TALK_MESSAGE_WELCOME="welcome to DingTalk";
 }

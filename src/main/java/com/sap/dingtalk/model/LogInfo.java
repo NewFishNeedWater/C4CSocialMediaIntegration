@@ -15,6 +15,9 @@ public class LogInfo {
 
     @Column(name= "api_name")
     private String apiName;
+
+    @Column(name = "api_type")
+    private String apiType;
     private String request;
     private String response;
     @Column(name="error_code")
@@ -32,6 +35,14 @@ public class LogInfo {
 
     public void setApiName(String apiName) {
         this.apiName = apiName;
+    }
+
+    public String getApiType() {
+        return apiType;
+    }
+
+    public void setApiType(String apiType) {
+        this.apiType = apiType;
     }
 
     public String getRequest() {
