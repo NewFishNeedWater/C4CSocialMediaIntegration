@@ -56,8 +56,8 @@ public class HttpRequestUtils {
      * @param jsonParam
      * @return
      */
-    public static JSONObject httpPost(String url,JSONObject jsonParam){
-        return httpPost(url, jsonParam, false);
+    public static JSONObject httpPost(String url,JSONObject jsonParam,String apiName){
+        return httpPost(url, jsonParam, false,apiName);
     }
 
     /**
@@ -67,7 +67,7 @@ public class HttpRequestUtils {
      * @param noNeedResponse
      * @return
      */
-    public static JSONObject httpPost(String url,JSONObject jsonParam, boolean noNeedResponse){
+    public static JSONObject httpPost(String url,JSONObject jsonParam, boolean noNeedResponse,String apiName){
 
 
         HttpClient httpClient;
@@ -83,6 +83,7 @@ public class HttpRequestUtils {
         LogInfo log = new LogInfo();
         log.setStartTime(new Date());
         log.setRequest(jsonParam.toString());
+        log.setApiName(apiName);
 
         try {
 
@@ -106,7 +107,7 @@ public class HttpRequestUtils {
                 String str = "";
                 try {
                     /**read json string from response server**/
-                    str = EntityUtils.toString(entity);
+                    str = EntityUtils.toString(entity,"UTF-8").trim();
                     if (noNeedResponse) {
                         return null;
                     }
@@ -138,16 +139,17 @@ public class HttpRequestUtils {
      * @param url    路径
      * @return
      */
-    public static JSONObject httpGet(String url){
+    public static JSONObject httpGet(String url,String apiName){
 
         LogInfo log = new LogInfo();
 
         log.setRequest(url);
         log.setStartTime(new Date());
+        log.setApiName(apiName);
         JSONObject jsonResult = null;
         try {
             HttpClient client = new DefaultHttpClient();
-            //发送get请求
+
             HttpGet request = new HttpGet(url);
 
             HttpResponse response = client.execute(request);
@@ -158,7 +160,7 @@ public class HttpRequestUtils {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 /**read json string from response server**/
                 log.setEndTime(new Date());
-                String strResult = EntityUtils.toString(response.getEntity());
+                String strResult = EntityUtils.toString(response.getEntity(),"UTF-8").trim();
                 /**convert the json string to json entity**/
                 jsonResult = JSONObject.fromObject(strResult);
                 log.setResponse(strResult);

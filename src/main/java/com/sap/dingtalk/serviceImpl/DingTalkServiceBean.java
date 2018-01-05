@@ -54,10 +54,7 @@ public class DingTalkServiceBean implements DingTalkService{
         }
 
         String requestUrl = Constants.DING_TALK_WEBSERVICE_URL +"/gettoken?corpid="+corpInfo.getCropId()+"&corpsecret="+corpInfo.getCorpSecret();
-
-        //String token = HttpRequestUtils.httpGet(requestUrl).get("access_token")==null?null:HttpRequestUtils.httpGet(requestUrl).get("access_token").toString();
-        JSONObject object = HttpRequestUtils.httpGet(requestUrl);
-
+        JSONObject object = HttpRequestUtils.httpGet(requestUrl,Constants.DING_TALK_API_GET_TOKEN);
         corpInfo.setAccessToken(object.get("access_token")==null?null:object.get("access_token").toString());
         corpInfo.setErrMsg(object.get("errmsg")==null?null:object.get("errmsg").toString());
         corpInfo.setErrMsg(object.get("errcode")==null?null:object.get("errcode").toString());
@@ -109,7 +106,7 @@ public class DingTalkServiceBean implements DingTalkService{
 
         JSONObject jsonObject = JSONObject.fromObject(group);
 
-        JSONObject response = HttpRequestUtils.httpPost(requestUrlForCreateGroup, jsonObject,false);
+        JSONObject response = HttpRequestUtils.httpPost(requestUrlForCreateGroup, jsonObject,Constants.DING_TALK_API_CREATE_CHAT);
 
         group.setChatId(response.get("chatid")==null?null:response.get("chatid").toString());
 
@@ -155,11 +152,11 @@ public class DingTalkServiceBean implements DingTalkService{
         }
 
 
-        String requestUrlForCreateGroup =Constants.DING_TALK_WEBSERVICE_URL+"/chat/send?access_token="+accessToken;
+        String requestUrlForSendMessage =Constants.DING_TALK_WEBSERVICE_URL+"/chat/send?access_token="+accessToken;
 
         JSONObject jsonObject = JSONObject.fromObject(vo);
 
-        JSONObject response = HttpRequestUtils.httpPost(requestUrlForCreateGroup, jsonObject,false);
+        JSONObject response = HttpRequestUtils.httpPost(requestUrlForSendMessage, jsonObject,Constants.DING_TALK_API_SEND_GROUP_MESSAGE);
 
 
         String statusMessage = response.get("errmsg")==null?null:response.get("errmsg").toString();

@@ -11,6 +11,13 @@ public class Constants {
 
     public final static String DING_TALK_MESSAGE_TYPE_TEXT="text";
 
+    public final static String DING_TALK_API_CREATE_CHAT="create chat";
+
+    public final static String DING_TALK_API_SEND_GROUP_MESSAGE="send group message";
+
+    public final static String DING_TALK_API_GET_TOKEN="get token";
+
+
 
     public final static String DING_TALK_MESSAGE_WELCOME="welcome to DingTalk";
 }

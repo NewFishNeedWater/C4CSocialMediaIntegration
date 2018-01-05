@@ -12,6 +12,9 @@ public class LogInfo {
     @GeneratedValue
     private Integer id;
 
+
+    @Column(name= "api_name")
+    private String apiName;
     private String request;
     private String response;
     @Column(name="error_code")
@@ -22,6 +25,14 @@ public class LogInfo {
     private Date startTime;
     @Column(name="end_datetime")
     private Date endTime;
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
+    }
 
     public String getRequest() {
         return request;
