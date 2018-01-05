@@ -28,4 +28,12 @@ public class AccountGroupServiceBean implements AccountGroupService{
 
     }
 
+
+    @Override
+    public AccountGroup getAccountGroupByAccountId(String id){
+
+        return accountGroupRepository.findByAccountId(id);
+
+    }
+
 }

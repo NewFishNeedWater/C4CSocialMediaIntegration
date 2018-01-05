@@ -7,5 +7,7 @@ public interface AccountGroupRepository extends JpaRepository<AccountGroup,Strin
 
     AccountGroup findByAccountUUId(String UUId);
 
+    AccountGroup findByAccountId(String id);
+
 
 }

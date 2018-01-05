@@ -14,7 +14,6 @@ import com.sap.dingtalk.service.AccountGroupService;
 import com.sap.dingtalk.service.CorpService;
 import com.sap.dingtalk.service.DingTalkService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import net.sf.json.JSONObject;
@@ -48,9 +47,9 @@ public class C4CController {
 
 
 
-    @ApiOperation(value="CreateChatGroup",notes="CreateChatGroupBasedOnUserList",httpMethod = "POST")
+    @ApiOperation(value="CreateChatGroup",notes="Create Chat Group Based On User List",httpMethod = "POST")
     @RequestMapping("/chat/create")
-    public CreateGroupResponseVo createGroup(@RequestBody @ApiParam(name="CreateGroupRequestVo" , value = "CreateGroupRequestVo", required = true) CreateGroupRequestVo vo){
+    public CreateGroupResponseVo createGroup(@RequestBody @ApiParam(name="CreateGroupRequestVo" , value = "create group request Vo", required = true) CreateGroupRequestVo vo){
 
         logger.warn("CreateChatGroup--Request from external:"+ JSONObject.fromObject(vo).toString());
 
@@ -72,6 +71,17 @@ public class C4CController {
             corpInfo = dingTalkService.getToken(corpInfo);
 
         }
+
+        AccountGroup accountGroupInDB=accountGroupService.getAccountGroupByAccountId(vo.getAccountId());
+
+        if(accountGroupInDB!=null){
+            logger.warn("There is an account group existing for account Id"+vo.getAccountId());
+            response.setErrorDesc("There is an account group existing"+vo.getAccountId());
+
+            return response;
+        }
+
+        vo.getAccountId();
         Group group = new Group();
 
         group.setName(vo.getName());
@@ -121,7 +131,7 @@ public class C4CController {
 
     @ApiOperation(value="AccountUpdateNotification",notes="Notification for Account Update",httpMethod = "POST")
     @RequestMapping("/notification/accountUpdate")
-    public AccountUpdateInfoResponseVo createGroup(@RequestBody @ApiParam(name="AccountUpdateInfoResponseVo" , value = "AccountUpdateInfoResponseVo", required = true) AccountUpdateInfoRequestVo vo){
+    public AccountUpdateInfoResponseVo createGroup(@RequestBody @ApiParam(name="AccountUpdateInfoRequestVo" , value = "Account Update Notification Request Vo", required = true) AccountUpdateInfoRequestVo vo){
 
         logger.warn("AccountUpdateNotification -- Request from external:"+ JSONObject.fromObject(vo).toString());
 

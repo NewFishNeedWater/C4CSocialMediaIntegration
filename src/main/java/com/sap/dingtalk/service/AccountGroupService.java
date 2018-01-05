@@ -17,4 +17,11 @@ public interface AccountGroupService {
 
     AccountGroup getAccountGroupByUUId(String UUId);
 
+
+    /**
+     * @function to get Account Group by Account Id
+     *
+     */
+    AccountGroup getAccountGroupByAccountId(String id);
+
 }
