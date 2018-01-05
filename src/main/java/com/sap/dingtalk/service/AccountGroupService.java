@@ -10,4 +10,11 @@ public interface AccountGroupService {
      */
     void save(AccountGroup accountGroup);
 
+
+    /**
+     * @function to get Account group mapping by account UUId
+     */
+
+    AccountGroup getAccountGroupByUUId(String UUId);
+
 }

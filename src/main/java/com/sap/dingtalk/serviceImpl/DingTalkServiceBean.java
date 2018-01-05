@@ -8,10 +8,14 @@ import com.sap.dingtalk.requestVo.SendTextMessageVo;
 import com.sap.dingtalk.service.DingTalkService;
 import com.sap.dingtalk.utils.HttpRequestUtils;
 import net.sf.json.JSONObject;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class DingTalkServiceBean implements DingTalkService{
@@ -124,7 +128,10 @@ public class DingTalkServiceBean implements DingTalkService{
     }
 
 
-    public String sendTextMessage(String accessToken, SendTextMessageVo vo){
+    public Map<String,Object> sendTextMessage(String accessToken, SendTextMessageVo vo){
+
+
+        Map<String,Object> responseMap = new HashMap<String,Object>();
 
         StringBuffer errMsg=new StringBuffer();
 
@@ -146,8 +153,9 @@ public class DingTalkServiceBean implements DingTalkService{
 
 
         if(!errMsg.toString().isEmpty()){
+            responseMap.put("errmsg",errMsg.toString());
 
-            return errMsg.toString();
+            return responseMap;
 
         }
 
@@ -161,8 +169,13 @@ public class DingTalkServiceBean implements DingTalkService{
 
         String statusMessage = response.get("errmsg")==null?null:response.get("errmsg").toString();
 
+        String statusCode= response.get("errcode")==null?null:response.get("errcode").toString();
 
-        return statusMessage;
+        responseMap.put("errmsg",statusMessage);
+        responseMap.put("errcode",statusCode);
+
+
+        return responseMap;
 
     }
 

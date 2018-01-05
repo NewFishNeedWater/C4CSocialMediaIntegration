@@ -4,6 +4,8 @@ import com.sap.dingtalk.model.CorpInfo;
 import com.sap.dingtalk.model.Group;
 import com.sap.dingtalk.requestVo.SendTextMessageVo;
 
+import java.util.Map;
+
 
 public interface DingTalkService {
 
@@ -28,6 +30,6 @@ public interface DingTalkService {
      * @function to send message to chat
      * @return the status message
      */
-    String sendTextMessage(String accessToken, SendTextMessageVo vo);
+    Map<String,Object> sendTextMessage(String accessToken, SendTextMessageVo vo);
 
 }

@@ -21,4 +21,11 @@ public class AccountGroupServiceBean implements AccountGroupService{
 
     }
 
+    @Override
+    public AccountGroup getAccountGroupByUUId(String UUId){
+
+        return accountGroupRepository.findByAccountUUId(UUId);
+
+    }
+
 }
