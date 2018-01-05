@@ -2,7 +2,7 @@ package com.sap.dingtalk.serviceImpl;
 
 
 import com.sap.dingtalk.model.AccountGroup;
-import com.sap.dingtalk.Repository.AccountGroupRepository;
+import com.sap.dingtalk.repository.AccountGroupRepository;
 import com.sap.dingtalk.service.AccountGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

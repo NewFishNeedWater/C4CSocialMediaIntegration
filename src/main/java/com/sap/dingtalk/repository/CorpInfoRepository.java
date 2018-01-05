@@ -1,4 +1,4 @@
-package com.sap.dingtalk.Repository;
+package com.sap.dingtalk.repository;
 
 
 import com.sap.dingtalk.model.CorpInfo;

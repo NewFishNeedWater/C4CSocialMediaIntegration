@@ -2,7 +2,7 @@ package com.sap.dingtalk.serviceImpl;
 
 
 import com.sap.dingtalk.model.CorpInfo;
-import com.sap.dingtalk.Repository.CorpInfoRepository;
+import com.sap.dingtalk.repository.CorpInfoRepository;
 import com.sap.dingtalk.service.CorpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

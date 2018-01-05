@@ -2,13 +2,12 @@ package com.sap.dingtalk.serviceImpl;
 
 import com.sap.dingtalk.constants.Constants;
 import com.sap.dingtalk.model.CorpInfo;
-import com.sap.dingtalk.Repository.CorpInfoRepository;
+import com.sap.dingtalk.repository.CorpInfoRepository;
 import com.sap.dingtalk.model.Group;
 import com.sap.dingtalk.requestVo.SendTextMessageVo;
 import com.sap.dingtalk.service.DingTalkService;
 import com.sap.dingtalk.utils.HttpRequestUtils;
 import net.sf.json.JSONObject;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

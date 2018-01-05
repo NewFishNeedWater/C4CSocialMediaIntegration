@@ -1,6 +1,6 @@
 package com.sap.dingtalk.serviceImpl;
 
-import com.sap.dingtalk.Repository.LogInfoRepository;
+import com.sap.dingtalk.repository.LogInfoRepository;
 import com.sap.dingtalk.model.LogInfo;
 import com.sap.dingtalk.service.LogInfoService;
 import org.slf4j.Logger;
