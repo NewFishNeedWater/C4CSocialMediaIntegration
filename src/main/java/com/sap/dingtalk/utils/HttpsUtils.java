@@ -48,7 +48,7 @@ public class HttpsUtils {
         try {
             httpClient = new SSLClient();
             httpPost = new HttpPost(url);
-            //设置参数
+
            /* List<NameValuePair> list = new ArrayList<NameValuePair>();
             Iterator iterator = map.entrySet().iterator();
             while(iterator.hasNext()){
@@ -81,10 +81,10 @@ public class HttpsUtils {
 
 
     /**
-     * 发送get请求
      *
-     * @param url     链接地址
-     * @param charset 字符编码，若为null则默认utf-8
+     *
+     * @param url
+     * @param charset
      * @return
      */
     public static String doGet(String url, String charset) {

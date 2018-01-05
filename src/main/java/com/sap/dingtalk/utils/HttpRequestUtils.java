@@ -14,7 +14,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.hibernate.service.spi.InjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class HttpRequestUtils {
         this.logInfoService = logInfoService;
     }
 
-    private static Logger logger = LoggerFactory.getLogger(HttpRequestUtils.class);    //日志记录
+    private static Logger logger = LoggerFactory.getLogger(HttpRequestUtils.class);
 
 
     @PostConstruct
@@ -53,8 +52,8 @@ public class HttpRequestUtils {
 
     /**
      * httpPost
-     * @param url  路径
-     * @param jsonParam 参数
+     * @param url
+     * @param jsonParam
      * @return
      */
     public static JSONObject httpPost(String url,JSONObject jsonParam){
@@ -63,14 +62,14 @@ public class HttpRequestUtils {
 
     /**
      * post请求
-     * @param url         url地址
-     * @param jsonParam     参数
-     * @param noNeedResponse    不需要返回结果
+     * @param url
+     * @param jsonParam
+     * @param noNeedResponse
      * @return
      */
     public static JSONObject httpPost(String url,JSONObject jsonParam, boolean noNeedResponse){
 
-        //post请求返回结果
+
         HttpClient httpClient;
         JSONObject jsonResult = null;
         HttpPost method = new HttpPost(url);
@@ -89,7 +88,7 @@ public class HttpRequestUtils {
 
             httpClient = new SSLClient();
             if (null != jsonParam) {
-                //解决中文乱码问题
+                //set charset to utf-8
                 StringEntity entity = new StringEntity(jsonParam.toString(), "utf-8");
                 entity.setContentEncoding("UTF-8");
                 entity.setContentType("application/json");
@@ -98,32 +97,34 @@ public class HttpRequestUtils {
             HttpResponse result = httpClient.execute(method);
             HttpEntity entity=result.getEntity();
             url = URLDecoder.decode(url, "UTF-8");
-            /**请求发送成功，并得到响应**/
+
+
+            /**request successfully and get response**/
             if (result.getStatusLine().getStatusCode() == 200) {
 
                 log.setEndTime(new Date());
                 String str = "";
                 try {
-                    /**读取服务器返回过来的json字符串数据**/
+                    /**read json string from response server**/
                     str = EntityUtils.toString(entity);
                     if (noNeedResponse) {
                         return null;
                     }
-                    /**把json字符串转换成json对象**/
+                    /**convert the json string to json entity**/
                     jsonResult = JSONObject.fromObject(str);
                     logger.warn("POST:Response:"+jsonResult.toString());
                     log.setResponse(str);
                 } catch (Exception e) {
                     log.setResponse(e.getMessage());
-                    logger.error("post请求提交失败:" + url, e);
+                    logger.error("Post failed:" + url, e);
                 }
             }
         } catch (IOException e) {
             log.setResponse(e.getMessage());
-            logger.error("post请求提交失败:" + url, e);
+            logger.error("Post failed:" + url, e);
         } catch(Exception e){
             log.setResponse(e.getMessage());
-            logger.error("post请求提交失败:" + url, e);
+            logger.error("Post failed:" + url, e);
         }
 
         httpRequestUtils.logInfoService.saveLog(log);
@@ -140,7 +141,7 @@ public class HttpRequestUtils {
     public static JSONObject httpGet(String url){
 
         LogInfo log = new LogInfo();
-        //get请求返回结果
+
         log.setRequest(url);
         log.setStartTime(new Date());
         JSONObject jsonResult = null;
@@ -153,23 +154,23 @@ public class HttpRequestUtils {
 
             logger.warn("GET:Request Url:"+url);
 
-            /**请求发送成功，并得到响应**/
+            /**request successfully and get response**/
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                /**读取服务器返回过来的json字符串数据**/
+                /**read json string from response server**/
                 log.setEndTime(new Date());
                 String strResult = EntityUtils.toString(response.getEntity());
-                /**把json字符串转换成json对象**/
+                /**convert the json string to json entity**/
                 jsonResult = JSONObject.fromObject(strResult);
                 log.setResponse(strResult);
                 logger.warn("GET:Response:"+jsonResult.toString());
                 url = URLDecoder.decode(url, "UTF-8");
             } else {
                 log.setResponse(response.toString());
-                logger.error("get请求提交失败:" + url);
+                logger.error("get failed:" + url);
             }
         } catch (IOException e) {
             log.setResponse(e.getMessage());
-            logger.error("get请求提交失败:" + url, e);
+            logger.error("get failed:" + url, e);
         }
 
         httpRequestUtils.logInfoService.saveLog(log);
