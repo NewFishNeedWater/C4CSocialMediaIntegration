@@ -2,7 +2,7 @@ package com.sap.dingtalk.service;
 
 import com.sap.dingtalk.model.CorpInfo;
 import com.sap.dingtalk.model.Group;
-import com.sap.dingtalk.requestVo.SendTextMessageVo;
+import com.sap.dingtalk.vo.requestVo.SendTextMessageVo;
 
 import java.util.Map;
 

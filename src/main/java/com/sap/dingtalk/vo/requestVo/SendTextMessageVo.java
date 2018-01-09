@@ -1,4 +1,4 @@
-package com.sap.dingtalk.requestVo;
+package com.sap.dingtalk.vo.requestVo;
 
 public class SendTextMessageVo {
 

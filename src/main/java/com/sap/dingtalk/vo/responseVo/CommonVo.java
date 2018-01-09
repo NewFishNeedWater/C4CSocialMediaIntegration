@@ -1,4 +1,4 @@
-package com.sap.dingtalk.responseVo;
+package com.sap.dingtalk.vo.responseVo;
 
 public class CommonVo {
 

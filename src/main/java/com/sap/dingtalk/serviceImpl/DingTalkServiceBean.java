@@ -4,7 +4,7 @@ import com.sap.dingtalk.constants.Constants;
 import com.sap.dingtalk.model.CorpInfo;
 import com.sap.dingtalk.repository.CorpInfoRepository;
 import com.sap.dingtalk.model.Group;
-import com.sap.dingtalk.requestVo.SendTextMessageVo;
+import com.sap.dingtalk.vo.requestVo.SendTextMessageVo;
 import com.sap.dingtalk.service.DingTalkService;
 import com.sap.dingtalk.utils.HttpRequestUtils;
 import net.sf.json.JSONObject;
