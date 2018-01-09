@@ -331,7 +331,7 @@ public class C4CController {
 
     @ApiOperation(value="LeadUpdateNotification",notes="Notification for Lead Update",httpMethod = "POST")
     @RequestMapping("/notification/leadUpdate")
-    public CommonVo createGroup(@RequestBody @ApiParam(name="LeadUpdateInfoRequestVo" , value = "Lead Update Notification Request Vo", required = true) LeadUpdateInfoRequestVo vo){
+    public CommonVo updateLead(@RequestBody @ApiParam(name="LeadUpdateInfoRequestVo" , value = "Lead Update Notification Request Vo", required = true) LeadUpdateInfoRequestVo vo){
 
 
         CommonVo responseVo = new CommonVo();
