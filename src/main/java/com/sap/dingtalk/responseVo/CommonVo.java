@@ -1,6 +1,6 @@
 package com.sap.dingtalk.responseVo;
 
-public class AccountUpdateInfoResponseVo {
+public class CommonVo {
 
     private String errMsg;
     private String errCode;

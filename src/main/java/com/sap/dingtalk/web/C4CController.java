@@ -5,12 +5,8 @@ import com.sap.dingtalk.model.AccountGroup;
 import com.sap.dingtalk.model.CorpInfo;
 import com.sap.dingtalk.model.Group;
 import com.sap.dingtalk.model.LogInfo;
-import com.sap.dingtalk.requestVo.AccountUpdateInfoRequestVo;
-import com.sap.dingtalk.requestVo.CreateGroupRequestVo;
-import com.sap.dingtalk.requestVo.SendTextMessageVo;
-import com.sap.dingtalk.requestVo.TextMessage;
-import com.sap.dingtalk.responseVo.AccountUpdateInfoResponseVo;
-import com.sap.dingtalk.responseVo.CreateGroupResponseVo;
+import com.sap.dingtalk.requestVo.*;
+import com.sap.dingtalk.responseVo.CommonVo;
 import com.sap.dingtalk.service.AccountGroupService;
 import com.sap.dingtalk.service.CorpService;
 import com.sap.dingtalk.service.DingTalkService;
@@ -55,7 +51,7 @@ public class C4CController {
 
     @ApiOperation(value="CreateChatGroup",notes="Create Chat Group Based On User List",httpMethod = "POST")
     @RequestMapping("/chat/create")
-    public CreateGroupResponseVo createGroup(@RequestBody @ApiParam(name="CreateGroupRequestVo" , value = "create group request Vo", required = true) CreateGroupRequestVo vo){
+    public CommonVo createGroup(@RequestBody @ApiParam(name="CreateGroupRequestVo" , value = "create group request Vo", required = true) CreateGroupRequestVo vo){
 
         logger.warn("CreateChatGroup--Request from external:"+ JSONObject.fromObject(vo).toString());
 
@@ -71,14 +67,14 @@ public class C4CController {
 
 
 
-        CreateGroupResponseVo response = new CreateGroupResponseVo();
+        CommonVo response = new CommonVo();
 
         CorpInfo corpInfo = corpService.getSingleCorpInfo();
 
         if(corpInfo.getCropId()==null||corpInfo.getCorpSecret()==null){
 
             logger.error("corp Id is empty or corp secret is empty");
-            response.setErrorDesc("corp Id is empty or corp secret is empty");
+            response.setErrMsg("corp Id is empty or corp secret is empty");
 
         }
 
@@ -94,8 +90,8 @@ public class C4CController {
 
         if(accountGroupInDB!=null){
             logger.warn("There is an account group existing for Account Id: "+vo.getAccountId());
-            response.setErrorDesc("There is an account group existing for Account Id :"+vo.getAccountId());
-            response.setErrorCode("40099");
+            response.setErrMsg("There is an account group existing for Account Id :"+vo.getAccountId());
+            response.setErrCode("40099");
             //response.setCorpInfo(new CorpInfo());
             //response.setGroup(new Group());
             logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
@@ -104,8 +100,8 @@ public class C4CController {
 
             log.setResponse(JSONObject.fromObject(response).toString());
 
-            log.setErrorCode(response.getErrorCode());
-            log.setErrorMsg(response.getErrorDesc());
+            log.setErrorCode(response.getErrCode());
+            log.setErrorMsg(response.getErrMsg());
 
             logInfoService.saveLog(log);
 
@@ -130,16 +126,16 @@ public class C4CController {
                 corpInfo = refreshToken(corpInfo);
             }catch(Exception e){
                 logger.warn(e.getMessage(),e);
-                response.setErrorDesc(e.getMessage());
-                response.setErrorCode("40095");
-                logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(response).toString());
+                response.setErrMsg(e.getMessage());
+                response.setErrCode("40095");
+                logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
 
                 log.setEndTime(new Date());
 
                 log.setResponse(JSONObject.fromObject(response).toString());
 
-                log.setErrorCode(response.getErrorCode());
-                log.setErrorMsg(response.getErrorDesc());
+                log.setErrorCode(response.getErrCode());
+                log.setErrorMsg(response.getErrMsg());
                 logInfoService.saveLog(log);
                 return response;
 
@@ -171,16 +167,16 @@ public class C4CController {
 
         //response.setCorpInfo(corpInfo);
         //response.setGroup(group);
-        response.setErrorCode("0");
-        response.setErrorDesc("ok");
+        response.setErrCode("0");
+        response.setErrMsg("ok");
 
         logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
         log.setEndTime(new Date());
 
         log.setResponse(JSONObject.fromObject(response).toString());
 
-        log.setErrorCode(response.getErrorCode());
-        log.setErrorMsg(response.getErrorDesc());
+        log.setErrorCode(response.getErrCode());
+        log.setErrorMsg(response.getErrMsg());
 
         logInfoService.saveLog(log);
 
@@ -190,7 +186,7 @@ public class C4CController {
 
     @ApiOperation(value="AccountUpdateNotification",notes="Notification for Account Update",httpMethod = "POST")
     @RequestMapping("/notification/accountUpdate")
-    public AccountUpdateInfoResponseVo createGroup(@RequestBody @ApiParam(name="AccountUpdateInfoRequestVo" , value = "Account Update Notification Request Vo", required = true) AccountUpdateInfoRequestVo vo){
+    public CommonVo createGroup(@RequestBody @ApiParam(name="AccountUpdateInfoRequestVo" , value = "Account Update Notification Request Vo", required = true) AccountUpdateInfoRequestVo vo){
 
         logger.warn("AccountUpdateNotification -- Request from external:"+ JSONObject.fromObject(vo).toString());
 
@@ -206,7 +202,7 @@ public class C4CController {
 
 
 
-        AccountUpdateInfoResponseVo responseVo = new AccountUpdateInfoResponseVo();
+        CommonVo responseVo = new CommonVo();
 
         String BOId= vo.getBusinessObjectId();
 
@@ -327,6 +323,43 @@ public class C4CController {
         log.setErrorMsg(responseVo.getErrMsg());
 
         logInfoService.saveLog(log);
+        return responseVo;
+
+    }
+
+
+
+    @ApiOperation(value="LeadUpdateNotification",notes="Notification for Lead Update",httpMethod = "POST")
+    @RequestMapping("/notification/leadUpdate")
+    public CommonVo createGroup(@RequestBody @ApiParam(name="LeadUpdateInfoRequestVo" , value = "Lead Update Notification Request Vo", required = true) LeadUpdateInfoRequestVo vo){
+
+
+        CommonVo responseVo = new CommonVo();
+        logger.warn("LeadUpdateNotification -- Request from external:"+ JSONObject.fromObject(vo).toString());
+
+        LogInfo log = new LogInfo();
+        log.setApiName("LeadUpdateNotification");
+        log.setApiType("IN");
+        log.setStartTime(new Date());
+        log.setRequest(JSONObject.fromObject(vo).toString());
+
+
+
+
+
+
+
+
+
+        responseVo.setErrMsg("ok");
+        responseVo.setErrCode("0");
+        log.setEndTime(new Date());
+        log.setResponse(JSONObject.fromObject(responseVo).toString());
+        log.setErrorCode(responseVo.getErrCode());
+        log.setErrorMsg(responseVo.getErrMsg());
+
+
+
         return responseVo;
 
     }
