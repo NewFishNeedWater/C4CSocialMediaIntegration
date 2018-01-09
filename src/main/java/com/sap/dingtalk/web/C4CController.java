@@ -126,7 +126,24 @@ public class C4CController {
         //if the token is expired, we need to refresh the token and re-try to create group
         if(group.getErrCode()==40014){
             logger.warn("Token Is empty , trying to get it from Ding Talk server");
-            corpInfo = dingTalkService.getToken(corpInfo);
+            try{
+                corpInfo = refreshToken(corpInfo);
+            }catch(Exception e){
+                logger.warn(e.getMessage(),e);
+                response.setErrorDesc(e.getMessage());
+                response.setErrorCode("40095");
+                logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(response).toString());
+
+                log.setEndTime(new Date());
+
+                log.setResponse(JSONObject.fromObject(response).toString());
+
+                log.setErrorCode(response.getErrorCode());
+                log.setErrorMsg(response.getErrorDesc());
+                logInfoService.saveLog(log);
+                return response;
+
+            }
             group = dingTalkService.createGroup(group,corpInfo);
         }
 
@@ -273,7 +290,26 @@ public class C4CController {
         //if the token is expired, we need to refresh the token and re-try to send message
         if(Integer.parseInt(responseMap.get("errcode").toString())==40014){
             logger.warn("Token Is empty , trying to get it from Ding Talk server");
-            corpInfo = dingTalkService.getToken(corpInfo);
+
+            try{
+                corpInfo = refreshToken(corpInfo);
+            }catch(Exception e){
+                logger.warn(e.getMessage(),e);
+                responseVo.setErrMsg(e.getMessage());
+                responseVo.setErrCode("40095");
+                logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
+
+                log.setEndTime(new Date());
+
+                log.setResponse(JSONObject.fromObject(responseVo).toString());
+
+                log.setErrorCode(responseVo.getErrCode());
+                log.setErrorMsg(responseVo.getErrMsg());
+                logInfoService.saveLog(log);
+                return responseVo;
+
+            }
+
             responseMap = dingTalkService.sendTextMessage(corpInfo.getAccessToken(),textVo);
         }
 
@@ -292,6 +328,31 @@ public class C4CController {
 
         logInfoService.saveLog(log);
         return responseVo;
+
+    }
+
+
+    /**
+     * @function to refresh the token
+     * @return new corp info contains new token
+     */
+    private CorpInfo refreshToken(CorpInfo info) throws Exception {
+
+
+        if(info==null){
+            throw new Exception("corp info is empty");
+
+        }
+        if(info.getCropId()==null||info.getCropId().isEmpty()){
+            throw new Exception("corp id is empty");
+        }
+        if(info.getCorpSecret()==null || info.getCorpSecret().isEmpty()){
+            throw new Exception("corp secret is empty");
+        }
+
+        CorpInfo corpInfo = dingTalkService.getToken(info);
+
+        return corpInfo;
 
     }
 
