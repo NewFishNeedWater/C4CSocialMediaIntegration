@@ -1,6 +1,6 @@
 package com.sap.dingtalk.vo.requestVo;
 
-public class AccountUpdateInfoRequestVo {
+public class C4CNotificationRequestVo {
 
 
     private String businessObject;

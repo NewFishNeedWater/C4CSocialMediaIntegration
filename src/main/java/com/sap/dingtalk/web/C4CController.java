@@ -186,7 +186,7 @@ public class C4CController {
 
     @ApiOperation(value="AccountUpdateNotification",notes="Notification for Account Update",httpMethod = "POST")
     @RequestMapping("/notification/accountUpdate")
-    public CommonVo createGroup(@RequestBody @ApiParam(name="AccountUpdateInfoRequestVo" , value = "Account Update Notification Request Vo", required = true) AccountUpdateInfoRequestVo vo){
+    public CommonVo createGroup(@RequestBody @ApiParam(name="C4CNotificationRequestVo" , value = "Account Update Notification Request Vo", required = true) C4CNotificationRequestVo vo){
 
         logger.warn("AccountUpdateNotification -- Request from external:"+ JSONObject.fromObject(vo).toString());
 
@@ -331,7 +331,7 @@ public class C4CController {
 
     @ApiOperation(value="LeadUpdateNotification",notes="Notification for Lead Update",httpMethod = "POST")
     @RequestMapping("/notification/leadUpdate")
-    public CommonVo updateLead(@RequestBody @ApiParam(name="LeadUpdateInfoRequestVo" , value = "Lead Update Notification Request Vo", required = true) LeadUpdateInfoRequestVo vo){
+    public CommonVo updateLead(@RequestBody @ApiParam(name="C4CNotificationRequestVo" , value = "Lead Update Notification Request Vo", required = true) C4CNotificationRequestVo vo){
 
 
         CommonVo responseVo = new CommonVo();
