@@ -2,22 +2,22 @@ package com.sap.dingtalk.vo.responseVo;
 
 public class CommonVo {
 
-    private String errMsg;
-    private String errCode;
+    private String errorDesc;
+    private String errorCode;
 
-    public String getErrMsg() {
-        return errMsg;
+    public String getErrorDesc() {
+        return errorDesc;
     }
 
-    public void setErrMsg(String errMsg) {
-        this.errMsg = errMsg;
+    public void setErrorDesc(String errorDesc) {
+        this.errorDesc = errorDesc;
     }
 
-    public String getErrCode() {
-        return errCode;
+    public String getErrorCode() {
+        return errorCode;
     }
 
-    public void setErrCode(String errCode) {
-        this.errCode = errCode;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 }

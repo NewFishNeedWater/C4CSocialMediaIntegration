@@ -74,7 +74,7 @@ public class C4CController {
         if(corpInfo.getCropId()==null||corpInfo.getCorpSecret()==null){
 
             logger.error("corp Id is empty or corp secret is empty");
-            response.setErrMsg("corp Id is empty or corp secret is empty");
+            response.setErrorDesc("corp Id is empty or corp secret is empty");
 
         }
 
@@ -90,8 +90,8 @@ public class C4CController {
 
         if(accountGroupInDB!=null){
             logger.warn("There is an account group existing for Account Id: "+vo.getAccountId());
-            response.setErrMsg("There is an account group existing for Account Id :"+vo.getAccountId());
-            response.setErrCode("40099");
+            response.setErrorDesc("There is an account group existing for Account Id :"+vo.getAccountId());
+            response.setErrorCode("40099");
             //response.setCorpInfo(new CorpInfo());
             //response.setGroup(new Group());
             logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
@@ -100,8 +100,8 @@ public class C4CController {
 
             log.setResponse(JSONObject.fromObject(response).toString());
 
-            log.setErrorCode(response.getErrCode());
-            log.setErrorMsg(response.getErrMsg());
+            log.setErrorCode(response.getErrorCode());
+            log.setErrorMsg(response.getErrorDesc());
 
             logInfoService.saveLog(log);
 
@@ -126,16 +126,16 @@ public class C4CController {
                 corpInfo = refreshToken(corpInfo);
             }catch(Exception e){
                 logger.warn(e.getMessage(),e);
-                response.setErrMsg(e.getMessage());
-                response.setErrCode("40095");
+                response.setErrorDesc(e.getMessage());
+                response.setErrorCode("40095");
                 logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
 
                 log.setEndTime(new Date());
 
                 log.setResponse(JSONObject.fromObject(response).toString());
 
-                log.setErrorCode(response.getErrCode());
-                log.setErrorMsg(response.getErrMsg());
+                log.setErrorCode(response.getErrorCode());
+                log.setErrorMsg(response.getErrorDesc());
                 logInfoService.saveLog(log);
                 return response;
 
@@ -167,16 +167,16 @@ public class C4CController {
 
         //response.setCorpInfo(corpInfo);
         //response.setGroup(group);
-        response.setErrCode("0");
-        response.setErrMsg("ok");
+        response.setErrorCode("0");
+        response.setErrorDesc("ok");
 
         logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
         log.setEndTime(new Date());
 
         log.setResponse(JSONObject.fromObject(response).toString());
 
-        log.setErrorCode(response.getErrCode());
-        log.setErrorMsg(response.getErrMsg());
+        log.setErrorCode(response.getErrorCode());
+        log.setErrorMsg(response.getErrorDesc());
 
         logInfoService.saveLog(log);
 
@@ -213,7 +213,7 @@ public class C4CController {
 
             errMsg.append("BOId is empty");
 
-            responseVo.setErrMsg(errMsg.toString());
+            responseVo.setErrorDesc(errMsg.toString());
             logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
 
 
@@ -227,14 +227,14 @@ public class C4CController {
         if(corpInfo.getCropId()==null||corpInfo.getCorpSecret()==null){
 
             logger.error("corp Id is empty or corp secret is empty");
-            responseVo.setErrMsg("corp Id is empty or corp secret is empty");
-            responseVo.setErrCode("40097");
+            responseVo.setErrorDesc("corp Id is empty or corp secret is empty");
+            responseVo.setErrorCode("40097");
             log.setEndTime(new Date());
 
             log.setResponse(JSONObject.fromObject(responseVo).toString());
 
-            log.setErrorCode(responseVo.getErrCode());
-            log.setErrorMsg(responseVo.getErrMsg());
+            log.setErrorCode(responseVo.getErrorCode());
+            log.setErrorMsg(responseVo.getErrorDesc());
             logInfoService.saveLog(log);
             return responseVo;
         }
@@ -254,16 +254,16 @@ public class C4CController {
         if(null==accountGroup){
 
             logger.error("cannot find account group by UUid"+BOId );
-            responseVo.setErrMsg("cannot find account group by UUid"+BOId );
-            responseVo.setErrCode("40098");
+            responseVo.setErrorDesc("cannot find account group by UUid"+BOId );
+            responseVo.setErrorCode("40098");
             logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
 
             log.setEndTime(new Date());
 
             log.setResponse(JSONObject.fromObject(responseVo).toString());
 
-            log.setErrorCode(responseVo.getErrCode());
-            log.setErrorMsg(responseVo.getErrMsg());
+            log.setErrorCode(responseVo.getErrorCode());
+            log.setErrorMsg(responseVo.getErrorDesc());
             logInfoService.saveLog(log);
             return responseVo;
 
@@ -291,16 +291,16 @@ public class C4CController {
                 corpInfo = refreshToken(corpInfo);
             }catch(Exception e){
                 logger.warn(e.getMessage(),e);
-                responseVo.setErrMsg(e.getMessage());
-                responseVo.setErrCode("40095");
+                responseVo.setErrorDesc(e.getMessage());
+                responseVo.setErrorCode("40095");
                 logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
 
                 log.setEndTime(new Date());
 
                 log.setResponse(JSONObject.fromObject(responseVo).toString());
 
-                log.setErrorCode(responseVo.getErrCode());
-                log.setErrorMsg(responseVo.getErrMsg());
+                log.setErrorCode(responseVo.getErrorCode());
+                log.setErrorMsg(responseVo.getErrorDesc());
                 logInfoService.saveLog(log);
                 return responseVo;
 
@@ -309,9 +309,9 @@ public class C4CController {
             responseMap = dingTalkService.sendTextMessage(corpInfo.getAccessToken(),textVo);
         }
 
-        responseVo.setErrMsg(responseMap.get("errmsg").toString());
+        responseVo.setErrorDesc(responseMap.get("errmsg").toString());
 
-        responseVo.setErrCode(responseMap.get("errcode").toString());
+        responseVo.setErrorCode(responseMap.get("errcode").toString());
 
         logger.warn("AccountUpdateNotification--Response to external:"+ JSONObject.fromObject(responseVo).toString());
 
@@ -319,8 +319,8 @@ public class C4CController {
 
         log.setResponse(JSONObject.fromObject(responseVo).toString());
 
-        log.setErrorCode(responseVo.getErrCode());
-        log.setErrorMsg(responseVo.getErrMsg());
+        log.setErrorCode(responseVo.getErrorCode());
+        log.setErrorMsg(responseVo.getErrorDesc());
 
         logInfoService.saveLog(log);
         return responseVo;
@@ -351,12 +351,12 @@ public class C4CController {
 
 
 
-        responseVo.setErrMsg("ok");
-        responseVo.setErrCode("0");
+        responseVo.setErrorDesc("ok");
+        responseVo.setErrorCode("0");
         log.setEndTime(new Date());
         log.setResponse(JSONObject.fromObject(responseVo).toString());
-        log.setErrorCode(responseVo.getErrCode());
-        log.setErrorMsg(responseVo.getErrMsg());
+        log.setErrorCode(responseVo.getErrorCode());
+        log.setErrorMsg(responseVo.getErrorDesc());
 
 
 
