@@ -163,6 +163,21 @@ public class C4CController {
 
             textVo.setText(message);
             dingTalkService.sendTextMessage(corpInfo.getAccessToken(),textVo);
+        }else{
+            logger.warn(group.getErrMsg());
+            response.setErrorDesc(group.getErrMsg());
+            response.setErrorCode(group.getErrCode().toString());
+            logger.warn("CreateChatGroup--Response to external:"+ JSONObject.fromObject(response).toString());
+
+            log.setEndTime(new Date());
+
+            log.setResponse(JSONObject.fromObject(response).toString());
+
+            log.setErrorCode(response.getErrorCode());
+            log.setErrorMsg(response.getErrorDesc());
+            logInfoService.saveLog(log);
+            return response;
+
         }
 
         //response.setCorpInfo(corpInfo);
