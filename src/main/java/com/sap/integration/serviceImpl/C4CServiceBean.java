@@ -14,8 +14,15 @@ public class C4CServiceBean implements C4CService{
     SalesQuoteFileRepository salesQuoteFileRepository;
 
 
+
     public void saveSalesQuoteInfo(SalesQuoteFile file){
         salesQuoteFileRepository.save(file);
+    }
+
+    public SalesQuoteFile getSalesQuoteByNodeId(String nodeId){
+
+        return salesQuoteFileRepository.findByNodeId(nodeId);
+
     }
 
 

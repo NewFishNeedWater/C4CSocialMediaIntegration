@@ -6,10 +6,11 @@ import javax.persistence.*;
 public class SalesQuoteFile {
 
 
-    @Id
+
     @GeneratedValue
     private Integer id;
 
+    @Id
     @Column(name = "node_id")
     private String nodeId;
 

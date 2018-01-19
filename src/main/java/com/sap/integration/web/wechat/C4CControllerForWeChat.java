@@ -137,18 +137,21 @@ public class C4CControllerForWeChat {
 
 
         }
-        SalesQuoteFile file = new SalesQuoteFile();
 
 
-        String filePath = FileUtils.base64StringToPDF(vo.getFileContent(),vo.getNodeId());
+        SalesQuoteFile existingFile = c4CService.getSalesQuoteByNodeId(vo.getNodeId());
+        SalesQuoteFile file=null;
 
-        file.setFileContent(filePath);
-        file.setFileName(vo.getFileName());
-        file.setNodeId(vo.getNodeId());
-        file.setOpenId(vo.getOpenId());
-
-
-        c4CService.saveSalesQuoteInfo(file);
+        if(null==existingFile){
+            file = new SalesQuoteFile();
+            String filePath = FileUtils.base64StringToPDF(vo.getFileContent(),vo.getNodeId());
+            file.setFileContent(filePath);
+            file.setFileName(vo.getFileName());
+            file.setNodeId(vo.getNodeId());
+            file.setOpenId(vo.getOpenId());
+            c4CService.saveSalesQuoteInfo(file);
+            logger.warn("The File does not existing --node Id: " + vo.getNodeId());
+        }
 
 
         MessageVo message = new MessageVo();
@@ -173,24 +176,6 @@ public class C4CControllerForWeChat {
         String errMsg = msgMap.get("errmsg").toString();
         Integer errCode = Integer.parseInt(msgMap.get("errcode").toString());
 
-        if((!"ok".equals(errMsg) )|| (!errCode.equals(0))){
-
-            response.setErrorCode(errCode.toString());
-            response.setErrorDesc(errMsg);
-
-            logger.warn("Publish Sales Quote--Response to external:"+ JSONObject.fromObject(response).toString());
-            log.setEndTime(new Date());
-
-            log.setResponse(JSONObject.fromObject(response).toString());
-
-            log.setErrorCode(response.getErrorCode());
-            log.setErrorMsg(response.getErrorDesc());
-
-            logInfoService.saveLog(log);
-
-            return response;
-
-        }
 
         if(errCode.equals(40001) || errCode.equals(42001)){
             corpInfo=weChatService.getToken(corpInfo);
@@ -219,6 +204,28 @@ public class C4CControllerForWeChat {
             }
 
         }
+
+
+
+        if((!"ok".equals(errMsg) )|| (!errCode.equals(0))){
+
+            response.setErrorCode(errCode.toString());
+            response.setErrorDesc(errMsg);
+
+            logger.warn("Publish Sales Quote--Response to external:"+ JSONObject.fromObject(response).toString());
+            log.setEndTime(new Date());
+
+            log.setResponse(JSONObject.fromObject(response).toString());
+
+            log.setErrorCode(response.getErrorCode());
+            log.setErrorMsg(response.getErrorDesc());
+
+            logInfoService.saveLog(log);
+
+            return response;
+
+        }
+
 
         response.setErrorCode("0");
         response.setErrorDesc("ok");

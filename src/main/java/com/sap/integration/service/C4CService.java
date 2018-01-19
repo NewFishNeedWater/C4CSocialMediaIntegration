@@ -7,5 +7,7 @@ public interface C4CService {
 
     void saveSalesQuoteInfo(SalesQuoteFile file);
 
+    SalesQuoteFile getSalesQuoteByNodeId(String nodeId);
+
 
 }
