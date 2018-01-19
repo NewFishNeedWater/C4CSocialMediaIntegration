@@ -192,7 +192,7 @@ public class C4CControllerForWeChat {
 
         }
 
-        if(errCode.equals(40001)){
+        if(errCode.equals(40001) || errCode.equals(42001)){
             corpInfo=weChatService.getToken(corpInfo);
             msgMap= weChatService.sendCustomMessage(message,corpInfo);
             errMsg = msgMap.get("errmsg").toString();
