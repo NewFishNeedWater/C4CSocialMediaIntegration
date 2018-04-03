@@ -8,8 +8,8 @@
     <version>1.0.0</version>
     <packaging>war</packaging>
 
-    <name>DingTalkForCloud</name>
-    <description>DingTalk Project</description>
+    <name>C4CSocialMediaIntegration</name>
+    <description>C4C SocialMedia Integration</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -144,7 +144,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warSourceExcludes>src/main/resources/**</warSourceExcludes>
-                    <warName>DingTalk</warName>
+                    <warName>C4CSocialMediaIntegration</warName>
                 </configuration>
             </plugin>
         </plugins>
