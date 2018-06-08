@@ -5,6 +5,7 @@ import com.sap.integration.model.LogInfo;
 import com.sap.integration.service.LogInfoService;
 import net.sf.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Component;
 
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Date;
 
@@ -179,5 +182,60 @@ public class HttpRequestUtils {
 
         httpRequestUtils.logInfoService.saveLog(log);
         return jsonResult;
+    }
+
+
+    public static JSONObject postFile(String url, File file) {
+
+
+
+        JSONObject response = new JSONObject();
+        try {
+            URL targetUrl = new URL(url);
+            HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
+
+            httpConnection.setDoOutput(true);
+            httpConnection.setDoInput(true);
+            //httpConnection.setUseCaches(false);
+            httpConnection.setRequestProperty("Accept", "application/json");
+            httpConnection.setRequestProperty("Connection", "keep-alive");
+            httpConnection.setRequestMethod("POST");
+            //httpConnection.setRequestProperty("content-type", "multipart/form-data;boundary="+BOUNDARY);
+
+            OutputStream out = new DataOutputStream(httpConnection.getOutputStream());
+            //File file = new File("C:\\Users\\i349284\\Desktop\\picture\\100.jpg");
+
+            FileInputStream fileInputStream = new FileInputStream(file);
+            DataInputStream inputStream = new DataInputStream(fileInputStream);
+
+            byte[] bufferOut = new byte[40960000];
+            int bytes = inputStream.read(bufferOut);
+            out.write(bufferOut, 0, bytes);
+
+            inputStream.close();
+            out.flush();
+            out.close();
+
+            if (httpConnection.getResponseCode() != 200) {
+                throw new RuntimeException("Failed:HTTP error code:" + httpConnection.getResponseCode());
+            }
+
+            //System.out.println(httpConnection.getResponseCode());
+            BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+
+            String output="";
+            System.out.println("Output from Server:\n");
+            while ((output = responseBuffer.readLine()) != null) {
+                response=JSONObject.fromObject(output);
+                logger.warn(output);
+            }
+
+            httpConnection.disconnect();
+        } catch (MalformedURLException e) {
+            logger.error("get failed:" + url, e);
+        } catch (IOException e) {
+            logger.error("get failed:" + url, e);
+        }
+        return response;
     }
 }
